@@ -2,6 +2,26 @@ package dailymanagement.demo.bean;
 
 import java.util.Date;
 
+/**
+ * 用户信息表
+ * unam：用户名
+ * realname：姓名
+ * sex：性别
+ * upath：头像地址
+ * school：学院
+ * major：专业
+ * birthday：生日
+ * jointime：加入时间
+ * prjHistory：项目经历
+ * skills：自身技能
+ * title：证书荣誉
+ * phone：电话
+ * qq：QQ
+ * weibo：微博
+ * mail：邮箱
+ * password：密码
+ *
+ */
 public class Userinfo {
     private String unam;
 
