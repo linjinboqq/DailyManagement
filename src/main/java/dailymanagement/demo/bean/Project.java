@@ -1,6 +1,9 @@
 package dailymanagement.demo.bean;
 
+import org.springframework.stereotype.Component;
+
 import java.util.Date;
+import java.util.List;
 
 /**
  * 项目表
@@ -12,6 +15,7 @@ import java.util.Date;
  * introduction：项目简介
  *
  */
+@Component
 public class Project {
     private Integer pid;
 
@@ -24,6 +28,8 @@ public class Project {
     private Date closeTime;
 
     private String introduction;
+
+    private List<Game> game;
 
     public Integer getPid() {
         return pid;
@@ -71,5 +77,26 @@ public class Project {
 
     public void setIntroduction(String introduction) {
         this.introduction = introduction == null ? null : introduction.trim();
+    }
+
+    public List<Game> getGame() {
+        return game;
+    }
+
+    public void setGame(List<Game> game) {
+        this.game = game;
+    }
+
+    @Override
+    public String toString() {
+        return "Project{" +
+                "pid=" + pid +
+                ", pname='" + pname + '\'' +
+                ", pRealname='" + pRealname + '\'' +
+                ", beginTime=" + beginTime +
+                ", closeTime=" + closeTime +
+                ", introduction='" + introduction + '\'' +
+                ", game=" + game +
+                '}';
     }
 }

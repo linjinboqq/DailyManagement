@@ -2,7 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="dailymanagement.demo.dao.UserinfoMapper" >
   <resultMap id="BaseResultMap" type="dailymanagement.demo.bean.Userinfo" >
-    <id column="unam" property="unam" jdbcType="VARCHAR" />
+    <id     column="uid" property="unam" jdbcType="INTEGER" />
+    <result column="unam" property="unam" jdbcType="VARCHAR" />
     <result column="realname" property="realname" jdbcType="VARCHAR" />
     <result column="sex" property="sex" jdbcType="CHAR" />
     <result column="upath" property="upath" jdbcType="VARCHAR" />
@@ -20,27 +21,27 @@
     <result column="password" property="password" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    unam, realname, sex, upath, school, major, birthday, jointime, prj_history, skills, 
+    uid, unam, realname, sex, upath, school, major, birthday, jointime, prj_history, skills,
     title, phone, qq, weibo, mail, password
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from userinfo
-    where unam = #{unam,jdbcType=VARCHAR}
+    where uid = #{uid,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from userinfo
-    where unam = #{unam,jdbcType=VARCHAR}
+    where uid = #{uid,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="dailymanagement.demo.bean.Userinfo" >
-    insert into userinfo (unam, realname, sex, 
+    insert into userinfo (uid, unam, realname, sex,
       upath, school, major, 
       birthday, jointime, prj_history, 
       skills, title, phone, 
       qq, weibo, mail, password
       )
-    values (#{unam,jdbcType=VARCHAR}, #{realname,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR}, 
+    values (#{uid,jdbcType=INTEGER}, #{unam,jdbcType=VARCHAR}, #{realname,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR},
       #{upath,jdbcType=VARCHAR}, #{school,jdbcType=VARCHAR}, #{major,jdbcType=VARCHAR}, 
       #{birthday,jdbcType=TIMESTAMP}, #{jointime,jdbcType=TIMESTAMP}, #{prjHistory,jdbcType=VARCHAR}, 
       #{skills,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{phone,jdbcType=CHAR}, 
@@ -50,6 +51,9 @@
   <insert id="insertSelective" parameterType="dailymanagement.demo.bean.Userinfo" >
     insert into userinfo
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="uid != null">
+        uid,
+      </if>
       <if test="unam != null" >
         unam,
       </if>
@@ -100,6 +104,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
       <if test="unam != null" >
         #{unam,jdbcType=VARCHAR},
       </if>
@@ -153,6 +160,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="dailymanagement.demo.bean.Userinfo" >
     update userinfo
     <set >
+      <if test="unam != null">
+        unam = #{unam,jdbcType=VARVHAR},
+      </if>
       <if test="realname != null" >
         realname = #{realname,jdbcType=VARCHAR},
       </if>
@@ -199,11 +209,12 @@
         password = #{password,jdbcType=VARCHAR},
       </if>
     </set>
-    where unam = #{unam,jdbcType=VARCHAR}
+    where uid = #{uid,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="dailymanagement.demo.bean.Userinfo" >
     update userinfo
-    set realname = #{realname,jdbcType=VARCHAR},
+    set unam = #{unam,jdbcType=INTEGER},
+      realname = #{realname,jdbcType=VARCHAR},
       sex = #{sex,jdbcType=CHAR},
       upath = #{upath,jdbcType=VARCHAR},
       school = #{school,jdbcType=VARCHAR},
@@ -218,6 +229,6 @@
       weibo = #{weibo,jdbcType=CHAR},
       mail = #{mail,jdbcType=CHAR},
       password = #{password,jdbcType=VARCHAR}
-    where unam = #{unam,jdbcType=VARCHAR}
+    where uid = #{uid,jdbcType=INTEGER}
   </update>
 </mapper>

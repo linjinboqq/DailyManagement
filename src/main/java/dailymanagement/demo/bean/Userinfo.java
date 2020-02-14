@@ -23,6 +23,8 @@ import java.util.Date;
  *
  */
 public class Userinfo {
+    private Integer uid;
+
     private String unam;
 
     private String realname;

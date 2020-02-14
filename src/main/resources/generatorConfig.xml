@@ -3,7 +3,6 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
-    <properties resource="dbconfig.properties"/>
 
     <context id="tables" targetRuntime="MyBatis3" defaultModelType="flat">
         <commentGenerator>
@@ -13,8 +12,8 @@
 
 
         <!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
-        <jdbcConnection driverClass="${jdbc.driverClass}"
-                        connectionURL="${jdbc.connectionUrl}"
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/dailymanagement"
                         userId="root"
                         password="1234">
         </jdbcConnection>
@@ -27,8 +26,8 @@
         </javaTypeResolver>
 
         <!-- targetProject:生成Entity类的路径 -->
-        <javaModelGenerator targetProject="${targetJavaProject}"
-                            targetPackage="${targetModelPackage}">
+        <javaModelGenerator targetProject="src/main/java"
+                            targetPackage="dailymanagement.demo.bean">
             <!-- enableSubPackages:是否让schema作为包的后缀 -->
             <property name="enableSubPackages" value="false"/>
             <!-- 从数据库返回的值被清理前后的空格 -->
@@ -36,23 +35,23 @@
         </javaModelGenerator>
 
         <!-- targetProject:XxxMapper.xml映射文件生成的路径 -->
-        <sqlMapGenerator targetProject="${targetResourcesProject}"
-                         targetPackage="${targetXMLPackage}">
+        <sqlMapGenerator targetProject="src/main/java"
+                         targetPackage="dailymanagement.demo.mapper">
             <!-- enableSubPackages:是否让schema作为包的后缀 -->
             <property name="enableSubPackages" value="false"/>
         </sqlMapGenerator>
 
         <!-- targetPackage：Mapper接口生成的位置 -->
         <javaClientGenerator type="XMLMAPPER"
-                             targetProject="${targetJavaProject}"
-                             targetPackage="${targetMapperPackage}">
+                             targetProject="src/main/java"
+                             targetPackage="dailymanagement.demo.dao">
             <!-- enableSubPackages:是否让schema作为包的后缀 -->
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
 
         <!-- 数据库表名字和我们的entity类对应的映射指定 -->
         <table schema=""
-               tableName="%"
+               tableName="userinfo_collection" domainObjectName="UserinfoCollection"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"

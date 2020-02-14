@@ -9,14 +9,40 @@
     <result column="close_time" property="closeTime" jdbcType="TIMESTAMP" />
     <result column="introduction" property="introduction" jdbcType="VARCHAR" />
   </resultMap>
+  <resultMap id="SelectMap" type="dailymanagement.demo.bean.Project">
+    <id column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="pname" property="pname" jdbcType="VARCHAR" />
+    <result column="p_realname" property="pRealname" jdbcType="VARCHAR" />
+    <result column="begin_time" property="beginTime" jdbcType="TIMESTAMP" />
+    <result column="close_time" property="closeTime" jdbcType="TIMESTAMP" />
+    <result column="introduction" property="introduction" jdbcType="VARCHAR" />
+    <collection property="game" ofType="dailymanagement.demo.bean.Game">
+      <id column="gid" property="gid" jdbcType="INTEGER"/>
+      <result column="pgid" property="pgid" jdbcType="INTEGER"/>
+      <result column="gname" property="gname" jdbcType="VARCHAR"/>
+      <result column="grecord" property="grecord" jdbcType="VARCHAR"/>
+    </collection>
+  </resultMap>
   <sql id="Base_Column_List" >
     pid, pname, p_realname, begin_time, close_time, introduction
   </sql>
+  <select id="selectByGid" resultMap="SelectMap" parameterType="dailymanagement.demo.bean.Project">
+    select
+    a.pid, a.pname, a.p_realname, a.begin_time, a.close_time, a.introduction,
+    b.gid, b.pgid, b.gname, b.grecord
+    from project a
+    left join game as b on a.pid = b.pgid
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from project
     where pid = #{pid,jdbcType=INTEGER}
+  </select>
+  <select id="getAll" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from project
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from project
@@ -30,7 +56,7 @@
       #{beginTime,jdbcType=TIMESTAMP}, #{closeTime,jdbcType=TIMESTAMP}, #{introduction,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="dailymanagement.demo.bean.Project" >
+  <insert id="insertSelective" parameterType="dailymanagement.demo.bean.Project" useGeneratedKeys="true" keyProperty="pid">
     insert into project
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="pid != null" >

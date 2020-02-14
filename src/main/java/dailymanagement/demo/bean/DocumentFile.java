@@ -19,6 +19,8 @@ public class DocumentFile {
 
     private String fpath;
 
+    private String ftype;
+
     public Integer getFid() {
         return fid;
     }
@@ -49,5 +51,24 @@ public class DocumentFile {
 
     public void setFpath(String fpath) {
         this.fpath = fpath == null ? null : fpath.trim();
+    }
+
+    public String getFtype() {
+        return ftype;
+    }
+
+    public void setFtype(String ftype) {
+        this.ftype = ftype;
+    }
+
+    @Override
+    public String toString() {
+        return "DocumentFile{" +
+                "fid=" + fid +
+                ", fname='" + fname + '\'' +
+                ", time=" + time +
+                ", fpath='" + fpath + '\'' +
+                ", ftype='" + ftype + '\'' +
+                '}';
     }
 }

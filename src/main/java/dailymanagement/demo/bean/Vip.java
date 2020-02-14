@@ -1,5 +1,11 @@
 package dailymanagement.demo.bean;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import dailymanagement.demo.utils.CustomDateSerializer;
+import org.springframework.stereotype.Component;
+
 import java.util.Date;
 
 /**
@@ -11,6 +17,7 @@ import java.util.Date;
  * endTime：截止时间
  *
  */
+@Component
 public class Vip {
     private Integer vid;
 
@@ -20,7 +27,10 @@ public class Vip {
 
     private String vpassword;
 
+    @JsonSerialize(using = CustomDateSerializer.class)
     private Date endTime;
+
+    private Integer typeid;
 
     public Integer getVid() {
         return vid;
@@ -54,11 +64,32 @@ public class Vip {
         this.vpassword = vpassword == null ? null : vpassword.trim();
     }
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     public Date getEndTime() {
         return endTime;
     }
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public Integer getTypeid() {
+        return typeid;
+    }
+
+    public void setTypeid(Integer typeid) {
+        this.typeid = typeid;
+    }
+
+    @Override
+    public String toString() {
+        return "Vip{" +
+                "vid=" + vid +
+                ", vnam='" + vnam + '\'' +
+                ", vaccount='" + vaccount + '\'' +
+                ", vpassword='" + vpassword + '\'' +
+                ", endTime=" + endTime +
+                ", typeid=" + typeid +
+                '}';
     }
 }

@@ -6,15 +6,34 @@
     <result column="fname" property="fname" jdbcType="VARCHAR" />
     <result column="time" property="time" jdbcType="TIMESTAMP" />
     <result column="fpath" property="fpath" jdbcType="VARCHAR" />
+    <result column="ftype"  property="ftype"  jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    fid, fname, time, fpath
+    fid, fname, time, fpath, ftype
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from document_file
     where fid = #{fid,jdbcType=INTEGER}
+  </select>
+  <select id="selectByTimeorName" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from document_file
+    <where>
+      <if test="#{ftime} != null">
+        time = #{ftime}
+      </if>
+      <if test="#{fname} != null">
+        or fname like CONCAT('%',#{fname}, '%')
+      </if>
+    </where>
+  </select>
+  <select id="getAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from document_file
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from document_file
@@ -26,7 +45,7 @@
     values (#{fid,jdbcType=INTEGER}, #{fname,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}, 
       #{fpath,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="dailymanagement.demo.bean.DocumentFile" >
+  <insert id="insertSelective" parameterType="dailymanagement.demo.bean.DocumentFile" useGeneratedKeys="true" keyProperty="fid">
     insert into document_file
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="fid != null" >
@@ -41,6 +60,9 @@
       <if test="fpath != null" >
         fpath,
       </if>
+      <if test="ftype != null">
+        ftype
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="fid != null" >
@@ -54,6 +76,9 @@
       </if>
       <if test="fpath != null" >
         #{fpath,jdbcType=VARCHAR},
+      </if>
+      <if test="ftype != null ">
+        #{ftype,jdbcType=VARCHAR}
       </if>
     </trim>
   </insert>
