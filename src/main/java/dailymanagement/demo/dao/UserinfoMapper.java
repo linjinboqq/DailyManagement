@@ -1,7 +1,11 @@
 package dailymanagement.demo.dao;
 
 import dailymanagement.demo.bean.Userinfo;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
+@Mapper
 public interface UserinfoMapper {
     int deleteByPrimaryKey(String unam);
 
@@ -14,4 +18,6 @@ public interface UserinfoMapper {
     int updateByPrimaryKeySelective(Userinfo record);
 
     int updateByPrimaryKey(Userinfo record);
+
+    Userinfo selectByUserName( String name);
 }

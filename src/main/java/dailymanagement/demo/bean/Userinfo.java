@@ -57,6 +57,10 @@ public class Userinfo {
 
     private String password;
 
+    public Integer getUid() {
+        return uid;
+    }
+
     public String getUnam() {
         return unam;
     }
