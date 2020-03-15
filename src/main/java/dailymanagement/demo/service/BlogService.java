@@ -104,6 +104,11 @@ public class BlogService implements BlogServiceImpl {
     }
 
     @Override
+    public List<Blog> getblogRankingList() {
+        return blogMapper.selectranklist();
+    }
+
+    @Override
     public int insert(Blog record) {
         return blogMapper.insert(record);
     }

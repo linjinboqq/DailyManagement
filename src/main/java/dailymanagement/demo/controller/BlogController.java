@@ -45,8 +45,8 @@ public class BlogController {
         JSONObject jsonObject = new JSONObject();
         List<Blog> list = blogService.getall();
         List<BlogResult> resultlist = new LinkedList();
-        boolean collection = false;
         for (Blog blog : list) {
+            boolean collection = false;
             int i = blogService.iscollection(blog.getBid(), userid);
             if (i == 1) {
                 collection = true;
@@ -68,8 +68,8 @@ public class BlogController {
         JSONObject jsonObject = new JSONObject();
         List<Blog> list = blogService.getallbytypeid(type);
         List<BlogResult> resultlist = new LinkedList();
-        boolean collection = false;
         for (Blog blog : list) {
+            boolean collection = false;
             int i = blogService.iscollection(blog.getBid(), userid);
             if (i == 1) {
                 collection = true;
@@ -90,8 +90,8 @@ public class BlogController {
         JSONObject jsonObject = new JSONObject();
         List<Blog> list = blogService.getallblogbyuserid(userId);
         List<BlogResult> resultlist = new LinkedList();
-        boolean collection = false;
         for (Blog blog : list) {
+            boolean collection = false;
             int i = blogService.iscollection(blog.getBid(), userId);
             if (i == 1) {
                 collection = true;
@@ -212,8 +212,8 @@ public class BlogController {
         JSONObject jsonObject = new JSONObject();
         List<Blog> list = blogService.blogUserCollection(userId);
         List<BlogResult> resultlist = new LinkedList();
-        boolean collection = false;
         for (Blog blog : list) {
+            boolean collection = false;
             int i = blogService.iscollection(blog.getBid(), userId);
             if (i == 1) {
                 collection = true;
@@ -284,12 +284,22 @@ public class BlogController {
     @PostMapping("/blogs/rankinglist")
     @ResponseBody
     @ApiOperation(value = "排行榜接口", notes = "参数： <br><br>")
-    public String blogRankingList() {
+    public String blogRankingList(String name) {
+        int userid = blogService.finduserid(name);
         JSONObject jsonObject = new JSONObject();
-        System.out.println();
+        List<Blog> list = blogService.getblogRankingList();
+        List<BlogResult> resultlist = new LinkedList();
+        for (Blog blog : list) {
+            boolean collection = false;
+            int i = blogService.iscollection(blog.getBid(), userid);
+            if (i == 1) {
+                collection = true;
+            }
+            resultlist.add(new BlogResult(blog, true, collection));
+        }
         jsonObject.put("code", "200");
         jsonObject.put("message", "success");
-        jsonObject.put("data", "成功");
+        jsonObject.put("data", resultlist);
         return jsonObject.toString();
     }
 

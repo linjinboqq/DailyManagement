@@ -31,4 +31,8 @@ public interface BlogMapper {
     int cancelLike(int bid);
 
     int colletion(int blogId, int userId);
+
+    List<Blog> selectranklist();
+
+
 }

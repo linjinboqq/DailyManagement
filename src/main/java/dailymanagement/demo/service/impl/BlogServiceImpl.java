@@ -41,4 +41,6 @@ public interface BlogServiceImpl {
     int finduserid(String name);
 
     List<Blog> blogUserCollection(int userId);
+
+    List<Blog> getblogRankingList();
 }
