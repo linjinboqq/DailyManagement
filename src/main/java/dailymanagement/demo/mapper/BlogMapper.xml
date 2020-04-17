@@ -8,9 +8,11 @@
         <result column="filepath" property="filepath" jdbcType="VARCHAR"/>
         <result column="authorid" property="authorid" jdbcType="INTEGER"/>
         <result column="likenum" property="likenum" jdbcType="INTEGER"/>
+        <result column="url" property="url" jdbcType="VARCHAR"/>
+        <result column="introduce" property="introduce" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
-    bid, type, comment, filepath, authorid, likenum
+   bid, type, comment, filepath, authorid, likenum,url,introduce
   </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
@@ -23,7 +25,7 @@
         select
         <include refid="Base_Column_List"/>
         from blog
-        GROUP BY likenum desc
+        ORDER   BY likenum desc
         limit 0, 3
     </select>
 
@@ -54,11 +56,12 @@
     where bid = #{bid,jdbcType=INTEGER}
   </delete>
     <insert id="insert" parameterType="dailymanagement.demo.bean.Blog">
-    insert into blog (bid, type, comment, 
-      filepath, authorid, likenum
+    insert into blog (bid, type, comment,
+      filepath, authorid, likenum,url,introduce
       )
-    values (#{bid,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR}, 
-      #{filepath,jdbcType=VARCHAR}, #{authorid,jdbcType=INTEGER}, #{likenum,jdbcType=INTEGER}
+    values (#{bid,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR},
+      #{filepath,jdbcType=VARCHAR}, #{authorid,jdbcType=INTEGER}, #{likenum,jdbcType=INTEGER},#{url,jdbcType=VARCHAR},
+      #{introduce,jdbcType=VARCHAR}
       )
   </insert>
     <insert id="insertSelective" parameterType="dailymanagement.demo.bean.Blog">
@@ -122,6 +125,12 @@
             <if test="likenum != null">
                 likenum = #{likenum,jdbcType=INTEGER},
             </if>
+            <if test="url != null">
+                url = #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="introduce != null">
+                introduce = #{introduce,jdbcType=VARCHAR},
+            </if>
         </set>
         where bid = #{bid,jdbcType=INTEGER}
     </update>
@@ -131,7 +140,9 @@
       comment = #{comment,jdbcType=VARCHAR},
       filepath = #{filepath,jdbcType=VARCHAR},
       authorid = #{authorid,jdbcType=INTEGER},
-      likenum = #{likenum,jdbcType=INTEGER}
+      likenum = #{likenum,jdbcType=INTEGER},
+      url = #{url,jdbcType=VARCHAR},
+      introduce =  #{introduce,jdbcType=VARCHAR}
     where bid = #{bid,jdbcType=INTEGER}
   </update>
 

@@ -114,7 +114,7 @@ public class BlogController {
     @ResponseBody
     @ApiOperation(value = "发布博客", notes = "参数： <br>1、name 用户名字2,blog 类型 3,博客内容 comment  4,MultipartFile file 上传的图片 <br>")
     public String pubulishBlog(HttpSession session, String name, String type, String comment,
-                               @RequestParam("file") MultipartFile file) {
+                               @RequestParam("file") MultipartFile file, String url2, String introduce) {
         int userId = blogService.finduserid(name);
         JSONObject jsonObject = new JSONObject();
         Blog blog = new Blog();
@@ -123,6 +123,8 @@ public class BlogController {
         String url = fileService.upload(file);
         blog.setFilepath(url);
         blog.setAuthorid(userId);
+        blog.setUrl(url2);
+        blog.setIntroduce(introduce);
         int result = blogService.publishBlog(userId, blog);
         jsonObject.put("code", "200");
         jsonObject.put("message", "success");
