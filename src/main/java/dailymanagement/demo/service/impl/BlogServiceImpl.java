@@ -43,4 +43,6 @@ public interface BlogServiceImpl {
     List<Blog> blogUserCollection(int userId);
 
     List<Blog> getblogRankingList();
+
+    List<String> findUserNameAndPhoto(int id);
 }

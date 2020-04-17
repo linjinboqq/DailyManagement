@@ -20,4 +20,6 @@ public interface UserinfoMapper {
     int updateByPrimaryKey(Userinfo record);
 
     Userinfo selectByUserName( String name);
+
+    Userinfo selectByuid(int id);
 }

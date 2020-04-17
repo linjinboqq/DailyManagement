@@ -23,6 +23,7 @@ import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class BlogController {
@@ -51,7 +52,8 @@ public class BlogController {
             if (i == 1) {
                 collection = true;
             }
-            resultlist.add(new BlogResult(blog, true, collection));
+            List<String> userinfo = blogService.findUserNameAndPhoto(blog.getAuthorid());
+            resultlist.add(new BlogResult(blog, true, collection, userinfo));
         }
         session.setAttribute("bloglist", list);
         jsonObject.put("code", "200");
@@ -74,7 +76,8 @@ public class BlogController {
             if (i == 1) {
                 collection = true;
             }
-            resultlist.add(new BlogResult(blog, true, collection));
+            List<String> userinfo = blogService.findUserNameAndPhoto(blog.getAuthorid());
+            resultlist.add(new BlogResult(blog, true, collection, userinfo));
         }
         jsonObject.put("code", "200");
         jsonObject.put("message", "success");
@@ -96,7 +99,8 @@ public class BlogController {
             if (i == 1) {
                 collection = true;
             }
-            resultlist.add(new BlogResult(blog, true, collection));
+            List<String> userinfo = blogService.findUserNameAndPhoto(blog.getAuthorid());
+            resultlist.add(new BlogResult(blog, true, collection, userinfo));
         }
         session.setAttribute("bloglist", list);
         jsonObject.put("code", "200");
@@ -218,7 +222,8 @@ public class BlogController {
             if (i == 1) {
                 collection = true;
             }
-            resultlist.add(new BlogResult(blog, true, collection));
+            List<String> userinfo = blogService.findUserNameAndPhoto(blog.getAuthorid());
+            resultlist.add(new BlogResult(blog, true, collection, userinfo));
         }
         jsonObject.put("code", "200");
         jsonObject.put("message", "success");
@@ -234,7 +239,6 @@ public class BlogController {
         int userid = blogService.finduserid(name);
         JSONObject jsonObject = new JSONObject();
         int i = brainstormService.publish(title, userid);
-        System.out.println(i);
         jsonObject.put("code", "200");
         jsonObject.put("message", "success");
         jsonObject.put("data", "发布idea成功");
@@ -274,9 +278,16 @@ public class BlogController {
     public String brainchatsBybrainid(HttpSession session, int brainid) {
         JSONObject jsonObject = new JSONObject();
         List<BrainChat> list = brainChatServiceImpl.brainchatsBybrainid(brainid);
+        List<BrainChatResult> listresult = new LinkedList<>();
+        for (BrainChat chat : list) {
+            List<String> userinfo = blogService.findUserNameAndPhoto(chat.getFrom());
+            BrainChatResult brainChat = new BrainChatResult(chat, userinfo);
+            listresult.add(brainChat);
+        }
         jsonObject.put("code", "200");
         jsonObject.put("message", "success");
-        jsonObject.put("data", list);
+        jsonObject.put("data", listresult);
+
         return jsonObject.toString();
     }
 
@@ -295,7 +306,8 @@ public class BlogController {
             if (i == 1) {
                 collection = true;
             }
-            resultlist.add(new BlogResult(blog, true, collection));
+            List<String> userinfo = blogService.findUserNameAndPhoto(blog.getAuthorid());
+            resultlist.add(new BlogResult(blog, true, collection, userinfo));
         }
         jsonObject.put("code", "200");
         jsonObject.put("message", "success");
@@ -314,6 +326,20 @@ public class BlogController {
         jsonObject.put("code", "200");
         jsonObject.put("message", "success");
         jsonObject.put("data", id);
+        return jsonObject.toString();
+    }
+
+
+    @PostMapping("/find/nameandphoto")
+    @ResponseBody
+    @ApiOperation(value = "找到用户名字和头像", notes = "参数： <br>id<br>")
+    public String findUserNameAndPhoto(int id) {
+        JSONObject jsonObject = new JSONObject();
+        List<String> userinfo = blogService.findUserNameAndPhoto(id);
+        System.out.println(userinfo.get(0) + userinfo.get(1));
+        jsonObject.put("code", "200");
+        jsonObject.put("message", "success");
+        jsonObject.put("data", userinfo);
         return jsonObject.toString();
     }
 

@@ -2,6 +2,7 @@ package dailymanagement.demo.dao;
 
 import dailymanagement.demo.bean.Blog;
 import dailymanagement.demo.bean.Book;
+import dailymanagement.demo.bean.Userinfo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
