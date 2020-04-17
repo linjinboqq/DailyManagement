@@ -3,6 +3,7 @@ package dailymanagement.demo.controller;
 import dailymanagement.demo.bean.*;
 import dailymanagement.demo.service.BlogService;
 import dailymanagement.demo.service.BrainstormService;
+import dailymanagement.demo.service.LikeService;
 import dailymanagement.demo.service.impl.BrainChatServiceImpl;
 import dailymanagement.demo.service.impl.FileService;
 import io.swagger.annotations.ApiOperation;
@@ -37,6 +38,8 @@ public class BlogController {
     BrainChatServiceImpl brainChatServiceImpl;
     @Autowired
     FileService fileService;
+    @Autowired
+    LikeService likeService;
 
     @GetMapping("/blogs")
     @ResponseBody
@@ -53,7 +56,8 @@ public class BlogController {
                 collection = true;
             }
             List<String> userinfo = blogService.findUserNameAndPhoto(blog.getAuthorid());
-            resultlist.add(new BlogResult(blog, true, collection, userinfo));
+            int islike = likeService.findEntityLikeStatus(userid, blog.getBid());
+            resultlist.add(new BlogResult(blog, islike == 1, collection, userinfo));
         }
         session.setAttribute("bloglist", list);
         jsonObject.put("code", "200");
@@ -77,7 +81,8 @@ public class BlogController {
                 collection = true;
             }
             List<String> userinfo = blogService.findUserNameAndPhoto(blog.getAuthorid());
-            resultlist.add(new BlogResult(blog, true, collection, userinfo));
+            int islike = likeService.findEntityLikeStatus(userid, blog.getBid());
+            resultlist.add(new BlogResult(blog, islike == 1, collection, userinfo));
         }
         jsonObject.put("code", "200");
         jsonObject.put("message", "success");
@@ -100,7 +105,8 @@ public class BlogController {
                 collection = true;
             }
             List<String> userinfo = blogService.findUserNameAndPhoto(blog.getAuthorid());
-            resultlist.add(new BlogResult(blog, true, collection, userinfo));
+            int islike = likeService.findEntityLikeStatus(userId, blog.getBid());
+            resultlist.add(new BlogResult(blog, islike == 1, collection, userinfo));
         }
         session.setAttribute("bloglist", list);
         jsonObject.put("code", "200");
@@ -136,8 +142,10 @@ public class BlogController {
     @PostMapping("/blog/like")
     @ResponseBody
     @ApiOperation(value = "点赞博客", notes = "参数： <br>1、博客id  2 ,model: 模式 赞还是取消赞  1 代表点赞 -1 代表取消赞<br>")
-    public String bloglike(HttpSession session, int blogId, int model) {//model 1 代表点赞 -1 代表取消赞
+    public String bloglike(HttpSession session, int blogId, int model, String name) {//model 1 代表点赞 -1 代表取消赞
         JSONObject jsonObject = new JSONObject();
+        int userId = blogService.finduserid(name);//redis
+        likeService.like(userId, blogId, model);
         int i = blogService.like(blogId, model);
         jsonObject.put("code", "200");
         jsonObject.put("message", "success");
@@ -225,7 +233,8 @@ public class BlogController {
                 collection = true;
             }
             List<String> userinfo = blogService.findUserNameAndPhoto(blog.getAuthorid());
-            resultlist.add(new BlogResult(blog, true, collection, userinfo));
+            int islike = likeService.findEntityLikeStatus(userId, blog.getBid());
+            resultlist.add(new BlogResult(blog, islike == 1, collection, userinfo));
         }
         jsonObject.put("code", "200");
         jsonObject.put("message", "success");
@@ -309,7 +318,8 @@ public class BlogController {
                 collection = true;
             }
             List<String> userinfo = blogService.findUserNameAndPhoto(blog.getAuthorid());
-            resultlist.add(new BlogResult(blog, true, collection, userinfo));
+            int islike = likeService.findEntityLikeStatus(userid, blog.getBid());
+            resultlist.add(new BlogResult(blog, islike == 1, collection, userinfo));
         }
         jsonObject.put("code", "200");
         jsonObject.put("message", "success");
